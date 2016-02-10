@@ -12,18 +12,33 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var quicksort = function (list) {
-      var _p0 = list;
+   var partition = function (eithers) {
+      var _p0 = eithers;
       if (_p0.ctor === "[]") {
-            return _U.list([]);
+            return {ctor: "_Tuple3",_0: _U.list([]),_1: _U.list([]),_2: _U.list([])};
          } else {
-            var _p2 = _p0._1;
-            var _p1 = _p0._0;
-            var higher = A2($List.filter,function (n) {    return _U.cmp(n,_p1) > 0;},_p2);
-            var lower = A2($List.filter,function (n) {    return _U.cmp(n,_p1) < 1;},_p2);
-            return A2($Basics._op["++"],quicksort(lower),A2($Basics._op["++"],_U.list([_p1]),quicksort(higher)));
+            switch (_p0._0.ctor)
+            {case "Left": var _p1 = partition(_p0._1);
+                 var lefts = _p1._0;
+                 var centers = _p1._1;
+                 var rights = _p1._2;
+                 return {ctor: "_Tuple3",_0: A2($List._op["::"],_p0._0._0,lefts),_1: centers,_2: rights};
+               case "Right": var _p2 = partition(_p0._1);
+                 var lefts = _p2._0;
+                 var centers = _p2._1;
+                 var rights = _p2._2;
+                 return {ctor: "_Tuple3",_0: lefts,_1: centers,_2: A2($List._op["::"],_p0._0._0,rights)};
+               default: var _p3 = partition(_p0._1);
+                 var lefts = _p3._0;
+                 var centers = _p3._1;
+                 var rights = _p3._2;
+                 return {ctor: "_Tuple3",_0: lefts,_1: A2($List._op["::"],_p0._0._0,centers),_2: rights};}
          }
    };
-   var main = $Graphics$Element.show(quicksort(_U.list([5,3,8,1,9,4,7])));
-   return _elm.Main.values = {_op: _op,main: main,quicksort: quicksort};
+   var Center = function (a) {    return {ctor: "Center",_0: a};};
+   var Right = function (a) {    return {ctor: "Right",_0: a};};
+   var Left = function (a) {    return {ctor: "Left",_0: a};};
+   var userIDs = _U.list([Left(42),Right("12A3BC"),Left(1337),Right("ZA7T9G"),Center(true),Center(false)]);
+   var main = $Graphics$Element.show(partition(userIDs));
+   return _elm.Main.values = {_op: _op,Left: Left,Right: Right,Center: Center,userIDs: userIDs,partition: partition,main: main};
 };
