@@ -5428,16 +5428,14 @@ Elm.Main.make = function (_elm) {
    if (_elm.Main.values) return _elm.Main.values;
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
-   $Color = Elm.Color.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var greenPentagon = A2($Graphics$Collage.move,{ctor: "_Tuple2",_0: -20,_1: -20},A2($Graphics$Collage.filled,$Color.green,A2($Graphics$Collage.ngon,5,50)));
-   var purplePentagon = A2($Graphics$Collage.move,{ctor: "_Tuple2",_0: 20,_1: 20},A2($Graphics$Collage.filled,$Color.purple,A2($Graphics$Collage.ngon,5,50)));
-   var main = A3($Graphics$Collage.collage,200,200,_U.list([purplePentagon,greenPentagon]));
-   return _elm.Main.values = {_op: _op,main: main,purplePentagon: purplePentagon,greenPentagon: greenPentagon};
+   var length = function (list) {    var _p0 = list;if (_p0.ctor === "[]") {    return 0;} else {    return 1 + length(_p0._1);}};
+   var main = $Graphics$Element.show(length(_U.range(10,90)));
+   return _elm.Main.values = {_op: _op,main: main,length: length};
 };
