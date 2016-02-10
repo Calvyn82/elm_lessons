@@ -12,7 +12,7 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var length = function (list) {    var _p0 = list;if (_p0.ctor === "[]") {    return 0;} else {    return 1 + length(_p0._1);}};
-   var main = $Graphics$Element.show(length(_U.range(10,90)));
-   return _elm.Main.values = {_op: _op,main: main,length: length};
+   var zip = $List.map2(F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}));
+   var main = $Graphics$Element.show(A2(zip,_U.list(["Tom","Sue","Bob"]),_U.list([45,31,26])));
+   return _elm.Main.values = {_op: _op,main: main,zip: zip};
 };
