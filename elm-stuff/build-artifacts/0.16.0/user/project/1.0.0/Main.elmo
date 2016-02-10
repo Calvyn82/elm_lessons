@@ -12,7 +12,18 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var zip = $List.map2(F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}));
-   var main = $Graphics$Element.show(A2(zip,_U.list(["Tom","Sue","Bob"]),_U.list([45,31,26])));
-   return _elm.Main.values = {_op: _op,main: main,zip: zip};
+   var quicksort = function (list) {
+      var _p0 = list;
+      if (_p0.ctor === "[]") {
+            return _U.list([]);
+         } else {
+            var _p2 = _p0._1;
+            var _p1 = _p0._0;
+            var higher = A2($List.filter,function (n) {    return _U.cmp(n,_p1) > 0;},_p2);
+            var lower = A2($List.filter,function (n) {    return _U.cmp(n,_p1) < 1;},_p2);
+            return A2($Basics._op["++"],quicksort(lower),A2($Basics._op["++"],_U.list([_p1]),quicksort(higher)));
+         }
+   };
+   var main = $Graphics$Element.show(quicksort(_U.list([5,3,8,1,9,4,7])));
+   return _elm.Main.values = {_op: _op,main: main,quicksort: quicksort};
 };
