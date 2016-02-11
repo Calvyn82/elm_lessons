@@ -6,36 +6,13 @@ Elm.Main.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
+   $Markdown = Elm.Markdown.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $Text = Elm.Text.make(_elm);
+   $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var $eval = function (expression) {
-      var _p0 = expression;
-      switch (_p0.ctor)
-      {case "T": return true;
-         case "F": return false;
-         case "Not": return $Basics.not($eval(_p0._0));
-         case "And": return $eval(_p0._0) && $eval(_p0._1);
-         default: return $eval(_p0._0) || $eval(_p0._1);}
-   };
-   var display = function (expr) {
-      return $Graphics$Element.leftAligned($Text.monospace($Text.fromString(A2($Basics._op["++"],
-      $Basics.toString($eval(expr)),
-      A2($Basics._op["++"],"&lArr; ",$Basics.toString(expr))))));
-   };
-   var Or = F2(function (a,b) {    return {ctor: "Or",_0: a,_1: b};});
-   var And = F2(function (a,b) {    return {ctor: "And",_0: a,_1: b};});
-   var Not = function (a) {    return {ctor: "Not",_0: a};};
-   var F = {ctor: "F"};
-   var T = {ctor: "T"};
-   var e1 = T;
-   var e2 = A2(And,T,F);
-   var e3 = A2(Or,e1,e2);
-   var e4 = A2(And,Not(e2),e1);
-   var main = A2($Graphics$Element.flow,$Graphics$Element.down,A2($List.map,display,_U.list([e1,e2,e3,e4])));
-   return _elm.Main.values = {_op: _op,T: T,F: F,Not: Not,And: And,Or: Or,$eval: $eval,e1: e1,e2: e2,e3: e3,e4: e4,main: main,display: display};
+   var markdown = "\n\n# I Love Markdown\n\n[Mysite](billscribe.com) let\'s you subscribe to bills in the Oklahoma \nlegislature, and markdown let me write that link easily.\n\n  * Lists are a thing.\n  * They work like this.\n  * Listy list list list\n  * ...\n\nThe elm-markdown package parses all of this content, allowing\nsweet sweet blocks of `Element` or `Html`.\n\n";
+   var main = $Markdown.toHtml(markdown);
+   return _elm.Main.values = {_op: _op,main: main,markdown: markdown};
 };
