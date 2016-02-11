@@ -57,7 +57,30 @@ sum tree =
     Node v left right ->
       v + sum left + sum right
 
--- start here with flatten
+flatten : Tree a -> List a
+flatten tree =
+  case tree of
+    Empty -> []
+    Node v left right ->
+      [v] ++ flatten left ++ flatten right
+
+isElement : a -> Tree a -> Bool
+isElement element tree =
+  case tree of
+    Empty -> False
+    Node v left right ->
+      v == element
+      || isElement element left
+      || isElement element right
+
+fold : (a -> b -> b) -> b -> Tree a -> b
+
+fold f start tree =
+  case tree of
+    Empty -> start
+    Node v left right ->
+      (fold f (f v (fold f start right)) left)
+
 main : Element
 main =
   flow down
@@ -66,6 +89,12 @@ main =
   , display "map ((+)1)" (map ((+)1)) t2
   , display "sum" sum t1
   , display "sum" sum t2
+  , display "flatten" flatten t1
+  , display "flatten" flatten t2
+  , display "isElement 1 t1" (isElement 1) t1
+  , display "isElement 4 t1" (isElement 4) t1
+  , display "fold (+) 0 t1"  (fold (+) 0) t1
+  , display "fold (::) [] t1" (fold (::) []) t1
   ]
 
 display : String -> (Tree a -> b) -> Tree a -> Element

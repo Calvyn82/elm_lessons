@@ -13,67 +13,29 @@ Elm.Main.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $Text = Elm.Text.make(_elm);
    var _op = {};
-   var display = F3(function (name,f,value) {
-      return $Graphics$Element.leftAligned($Text.monospace($Text.fromString(A2($Basics._op["++"],
-      name,
-      A2($Basics._op["++"],
-      " (",
-      A2($Basics._op["++"],$Basics.toString(value),A2($Basics._op["++"],") &rArr;\n    ",A2($Basics._op["++"],$Basics.toString(f(value)),"\n"))))))));
-   });
-   var sum = function (tree) {    var _p0 = tree;if (_p0.ctor === "Empty") {    return 0;} else {    return _p0._0 + sum(_p0._1) + sum(_p0._2);}};
-   var depth = function (tree) {
-      var _p1 = tree;
-      if (_p1.ctor === "Empty") {
-            return 0;
-         } else {
-            return 1 + A2($Basics.max,depth(_p1._1),depth(_p1._2));
-         }
+   var $eval = function (expression) {
+      var _p0 = expression;
+      switch (_p0.ctor)
+      {case "T": return true;
+         case "F": return false;
+         case "Not": return $Basics.not($eval(_p0._0));
+         case "And": return $eval(_p0._0) && $eval(_p0._1);
+         default: return $eval(_p0._0) || $eval(_p0._1);}
    };
-   var Node = F3(function (a,b,c) {    return {ctor: "Node",_0: a,_1: b,_2: c};});
-   var Empty = {ctor: "Empty"};
-   var empty = Empty;
-   var singleton = function (v) {    return A3(Node,v,Empty,Empty);};
-   var insert = F2(function (x,tree) {
-      var _p2 = tree;
-      if (_p2.ctor === "Empty") {
-            return singleton(x);
-         } else {
-            var _p5 = _p2._0;
-            var _p4 = _p2._2;
-            var _p3 = _p2._1;
-            return _U.cmp(x,_p5) > 0 ? A3(Node,_p5,_p3,A2(insert,x,_p4)) : _U.cmp(x,_p5) < 0 ? A3(Node,_p5,A2(insert,x,_p3),_p4) : tree;
-         }
-   });
-   var fromList = function (xs) {    return A3($List.foldl,insert,empty,xs);};
-   var t1 = fromList(_U.list([1,2,3]));
-   var t2 = fromList(_U.list([2,1,3]));
-   var map = F2(function (f,tree) {
-      var _p6 = tree;
-      if (_p6.ctor === "Empty") {
-            return Empty;
-         } else {
-            return A3(Node,f(_p6._0),A2(map,f,_p6._1),A2(map,f,_p6._2));
-         }
-   });
-   var main = A2($Graphics$Element.flow,
-   $Graphics$Element.down,
-   _U.list([A3(display,"depth",depth,t1)
-           ,A3(display,"depth",depth,t2)
-           ,A3(display,"map ((+)1)",map(F2(function (x,y) {    return x + y;})(1)),t2)
-           ,A3(display,"sum",sum,t1)
-           ,A3(display,"sum",sum,t2)]));
-   return _elm.Main.values = {_op: _op
-                             ,Empty: Empty
-                             ,Node: Node
-                             ,empty: empty
-                             ,singleton: singleton
-                             ,insert: insert
-                             ,fromList: fromList
-                             ,depth: depth
-                             ,map: map
-                             ,t1: t1
-                             ,t2: t2
-                             ,sum: sum
-                             ,main: main
-                             ,display: display};
+   var display = function (expr) {
+      return $Graphics$Element.leftAligned($Text.monospace($Text.fromString(A2($Basics._op["++"],
+      $Basics.toString($eval(expr)),
+      A2($Basics._op["++"],"&lArr; ",$Basics.toString(expr))))));
+   };
+   var Or = F2(function (a,b) {    return {ctor: "Or",_0: a,_1: b};});
+   var And = F2(function (a,b) {    return {ctor: "And",_0: a,_1: b};});
+   var Not = function (a) {    return {ctor: "Not",_0: a};};
+   var F = {ctor: "F"};
+   var T = {ctor: "T"};
+   var e1 = T;
+   var e2 = A2(And,T,F);
+   var e3 = A2(Or,e1,e2);
+   var e4 = A2(And,Not(e2),e1);
+   var main = A2($Graphics$Element.flow,$Graphics$Element.down,A2($List.map,display,_U.list([e1,e2,e3,e4])));
+   return _elm.Main.values = {_op: _op,T: T,F: F,Not: Not,And: And,Or: Or,$eval: $eval,e1: e1,e2: e2,e3: e3,e4: e4,main: main,display: display};
 };
