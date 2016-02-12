@@ -6,13 +6,33 @@ Elm.Main.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
    $List = Elm.List.make(_elm),
-   $Markdown = Elm.Markdown.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
+   $String = Elm.String.make(_elm);
    var _op = {};
-   var markdown = "\n\n# I Love Markdown\n\n[Mysite](billscribe.com) let\'s you subscribe to bills in the Oklahoma \nlegislature, and markdown let me write that link easily.\n\n  * Lists are a thing.\n  * They work like this.\n  * Listy list list list\n  * ...\n\nThe elm-markdown package parses all of this content, allowing\nsweet sweet blocks of `Element` or `Html`.\n\n";
-   var main = $Markdown.toHtml(markdown);
-   return _elm.Main.values = {_op: _op,main: main,markdown: markdown};
+   var myStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "width",_1: "100%"}
+                                                ,{ctor: "_Tuple2",_0: "height",_1: "40px"}
+                                                ,{ctor: "_Tuple2",_0: "padding",_1: "10px 0"}
+                                                ,{ctor: "_Tuple2",_0: "font-size",_1: "2em"}
+                                                ,{ctor: "_Tuple2",_0: "text-align",_1: "center"}]));
+   var view = F2(function (address,string) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.input,
+              _U.list([$Html$Attributes.placeholder("Text to reverse")
+                      ,$Html$Attributes.value(string)
+                      ,A3($Html$Events.on,"input",$Html$Events.targetValue,$Signal.message(address))
+                      ,myStyle]),
+              _U.list([]))
+              ,A2($Html.div,_U.list([myStyle]),_U.list([$Html.text($String.toUpper(string))]))]));
+   });
+   var update = F2(function (newStr,oldStr) {    return newStr;});
+   var main = $StartApp$Simple.start({model: "",view: view,update: update});
+   return _elm.Main.values = {_op: _op,main: main,update: update,view: view,myStyle: myStyle};
 };
