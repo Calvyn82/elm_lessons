@@ -13,26 +13,58 @@ Elm.Main.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
-   $String = Elm.String.make(_elm);
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
    var _op = {};
-   var myStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "width",_1: "100%"}
-                                                ,{ctor: "_Tuple2",_0: "height",_1: "40px"}
-                                                ,{ctor: "_Tuple2",_0: "padding",_1: "10px 0"}
-                                                ,{ctor: "_Tuple2",_0: "font-size",_1: "2em"}
-                                                ,{ctor: "_Tuple2",_0: "text-align",_1: "center"}]));
-   var view = F2(function (address,string) {
+   var radio = F4(function (address,model,style,name) {
+      return _U.list([A2($Html.input,
+                     _U.list([$Html$Attributes.type$("radio")
+                             ,$Html$Attributes.checked(_U.eq(model.style,style))
+                             ,A3($Html$Events.on,"change",$Html$Events.targetChecked,function (_p0) {    return A2($Signal.message,address,style);})]),
+                     _U.list([]))
+                     ,$Html.text(name)
+                     ,A2($Html.br,_U.list([]),_U.list([]))]);
+   });
+   var toStyle = function (model) {
+      return $Html$Attributes.style(function () {
+         var _p1 = model.style;
+         switch (_p1.ctor)
+         {case "Red": return _U.list([{ctor: "_Tuple2",_0: "color",_1: "red"}]);
+            case "Underline": return _U.list([{ctor: "_Tuple2",_0: "text-decoration",_1: "underline"}]);
+            case "Bold": return _U.list([{ctor: "_Tuple2",_0: "font-weight",_1: "bold"}]);
+            default: return _U.list([{ctor: "_Tuple2",_0: "font-style",_1: "italic"}]);}
+      }());
+   };
+   var update = F2(function (newStyle,model) {    return _U.update(model,{style: newStyle});});
+   var Italic = {ctor: "Italic"};
+   var Bold = {ctor: "Bold"};
+   var initialModel = {style: Bold};
+   var Underline = {ctor: "Underline"};
+   var Red = {ctor: "Red"};
+   var view = F2(function (address,model) {
       return A2($Html.div,
       _U.list([]),
-      _U.list([A2($Html.input,
-              _U.list([$Html$Attributes.placeholder("Text to reverse")
-                      ,$Html$Attributes.value(string)
-                      ,A3($Html$Events.on,"input",$Html$Events.targetValue,$Signal.message(address))
-                      ,myStyle]),
-              _U.list([]))
-              ,A2($Html.div,_U.list([myStyle]),_U.list([$Html.text($String.toUpper(string))]))]));
+      A2($List._op["::"],
+      A2($Html.span,_U.list([toStyle(model)]),_U.list([$Html.text("Hello, how are you?!")])),
+      A2($List._op["::"],
+      A2($Html.br,_U.list([]),_U.list([])),
+      A2($Basics._op["++"],
+      A4(radio,address,model,Red,"red"),
+      A2($Basics._op["++"],
+      A4(radio,address,model,Underline,"underline"),
+      A2($Basics._op["++"],A4(radio,address,model,Bold,"bold"),A4(radio,address,model,Italic,"italic")))))));
    });
-   var update = F2(function (newStr,oldStr) {    return newStr;});
-   var main = $StartApp$Simple.start({model: "",view: view,update: update});
-   return _elm.Main.values = {_op: _op,main: main,update: update,view: view,myStyle: myStyle};
+   var Model = function (a) {    return {style: a};};
+   var main = $StartApp$Simple.start({model: initialModel,view: view,update: update});
+   return _elm.Main.values = {_op: _op
+                             ,main: main
+                             ,Model: Model
+                             ,Red: Red
+                             ,Underline: Underline
+                             ,Bold: Bold
+                             ,Italic: Italic
+                             ,initialModel: initialModel
+                             ,update: update
+                             ,view: view
+                             ,toStyle: toStyle
+                             ,radio: radio};
 };
