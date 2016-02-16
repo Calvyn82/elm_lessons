@@ -6,65 +6,14 @@ Elm.Main.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Html$Events = Elm.Html.Events.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
+   $Window = Elm.Window.make(_elm);
    var _op = {};
-   var radio = F4(function (address,model,style,name) {
-      return _U.list([A2($Html.input,
-                     _U.list([$Html$Attributes.type$("radio")
-                             ,$Html$Attributes.checked(_U.eq(model.style,style))
-                             ,A3($Html$Events.on,"change",$Html$Events.targetChecked,function (_p0) {    return A2($Signal.message,address,style);})]),
-                     _U.list([]))
-                     ,$Html.text(name)
-                     ,A2($Html.br,_U.list([]),_U.list([]))]);
-   });
-   var toStyle = function (model) {
-      return $Html$Attributes.style(function () {
-         var _p1 = model.style;
-         switch (_p1.ctor)
-         {case "Red": return _U.list([{ctor: "_Tuple2",_0: "color",_1: "red"}]);
-            case "Underline": return _U.list([{ctor: "_Tuple2",_0: "text-decoration",_1: "underline"}]);
-            case "Bold": return _U.list([{ctor: "_Tuple2",_0: "font-weight",_1: "bold"}]);
-            default: return _U.list([{ctor: "_Tuple2",_0: "font-style",_1: "italic"}]);}
-      }());
-   };
-   var update = F2(function (newStyle,model) {    return _U.update(model,{style: newStyle});});
-   var Italic = {ctor: "Italic"};
-   var Bold = {ctor: "Bold"};
-   var initialModel = {style: Bold};
-   var Underline = {ctor: "Underline"};
-   var Red = {ctor: "Red"};
-   var view = F2(function (address,model) {
-      return A2($Html.div,
-      _U.list([]),
-      A2($List._op["::"],
-      A2($Html.span,_U.list([toStyle(model)]),_U.list([$Html.text("Hello, how are you?!")])),
-      A2($List._op["::"],
-      A2($Html.br,_U.list([]),_U.list([])),
-      A2($Basics._op["++"],
-      A4(radio,address,model,Red,"red"),
-      A2($Basics._op["++"],
-      A4(radio,address,model,Underline,"underline"),
-      A2($Basics._op["++"],A4(radio,address,model,Bold,"bold"),A4(radio,address,model,Italic,"italic")))))));
-   });
-   var Model = function (a) {    return {style: a};};
-   var main = $StartApp$Simple.start({model: initialModel,view: view,update: update});
-   return _elm.Main.values = {_op: _op
-                             ,main: main
-                             ,Model: Model
-                             ,Red: Red
-                             ,Underline: Underline
-                             ,Bold: Bold
-                             ,Italic: Italic
-                             ,initialModel: initialModel
-                             ,update: update
-                             ,view: view
-                             ,toStyle: toStyle
-                             ,radio: radio};
+   var resizeablePaint = function (_p0) {    var _p1 = _p0;return A3($Graphics$Element.fittedImage,_p1._0,_p1._1,"http://elm-lang.org/imgs/paint.jpg");};
+   var main = A2($Signal.map,resizeablePaint,$Window.dimensions);
+   return _elm.Main.values = {_op: _op,main: main,resizeablePaint: resizeablePaint};
 };
